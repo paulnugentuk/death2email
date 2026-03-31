@@ -15,6 +15,9 @@ export default function InboxDemo() {
 
   const emails = transformedEmails.slice(0, 8);
 
+  const actionCount = emails.filter(e => e.urgency === 'critical' || e.urgency === 'high').length;
+  const workspaceCount = new Set(emails.map(e => e.workspace)).size;
+
   const getUrgencyDot = (urgency: string): React.ReactNode => {
     const dotColor = {
       critical: 'bg-red-500',
@@ -23,7 +26,16 @@ export default function InboxDemo() {
       low: 'bg-blue-500',
     }[urgency] || 'bg-blue-500';
 
-    return <div className={`w-2.5 h-2.5 rounded-full ${dotColor} flex-shrink-0`} />;
+    const shouldPulse = urgency === 'critical' || urgency === 'high';
+
+    return (
+      <div className="relative flex-shrink-0">
+        <div className={`w-2.5 h-2.5 rounded-full ${dotColor}`} />
+        {shouldPulse && (
+          <div className={`absolute inset-0 w-2.5 h-2.5 rounded-full ${dotColor} animate-ping opacity-75`} />
+        )}
+      </div>
+    );
   };
 
   const getWorkspaceTagColor = (workspace: string): string => {
@@ -58,12 +70,12 @@ export default function InboxDemo() {
   };
 
   return (
-    <section className="py-24 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="demo" className="py-24 md:py-32 bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto px-6 md:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-white mb-4">See the transformation</h2>
-          <p className="text-xl text-zinc-400">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">See the transformation</h2>
+          <p className="text-lg text-zinc-400">
             Click any email to see how death2email turns noise into action
           </p>
         </div>
@@ -129,6 +141,23 @@ export default function InboxDemo() {
                   <span className="inline-block w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
                 </h3>
               </div>
+
+              {/* Summary Stats Bar */}
+              {!expandedEmailId && (
+                <div className="mx-4 mt-4 p-4 rounded-lg bg-purple-500/5 border border-purple-500/10">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="text-zinc-400">
+                      <span className="text-white font-semibold">{emails.length}</span> emails processed
+                    </div>
+                    <div className="text-zinc-400">
+                      <span className="text-purple-400 font-semibold">{actionCount}</span> actions needed
+                    </div>
+                    <div className="text-zinc-400">
+                      <span className="text-zinc-300 font-semibold">{workspaceCount}</span> workspaces
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Email List */}
               <div className="flex-1 overflow-y-auto space-y-3 p-4">

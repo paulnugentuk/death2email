@@ -28,38 +28,41 @@ export default function ProblemStatement() {
       title: 'Structural Issues',
       description:
         'Built for messaging, not task execution. Each email is an isolated unit with no system-level context. No native concept of workflows.',
-      color: 'text-amber-400',
+      color: 'text-red-400',
+      bgColor: 'bg-red-500/10',
     },
     {
       icon: Brain,
       title: 'User Pain',
       description:
         'Cognitive overload. Important updates buried in threads. Manual effort to extract meaning and act.',
-      color: 'text-blue-400',
+      color: 'text-amber-400',
+      bgColor: 'bg-amber-500/10',
     },
     {
       icon: Zap,
       title: 'Modern Mismatch',
       description:
         'Most emails are system notifications — orders, bookings, alerts — still processed like human conversations.',
-      color: 'text-cyan-400',
+      color: 'text-blue-400',
+      bgColor: 'bg-blue-500/10',
     },
   ];
 
   return (
     <>
       <style>{fadeInUp}</style>
-      <section className="relative w-full py-24 px-8 bg-[#0a0a0a] border-t border-zinc-800/50">
+      <section id="problem" className="relative w-full py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/10 via-transparent to-transparent pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="relative z-10 max-w-6xl mx-auto">
           {/* Section title */}
-          <div className="mb-20" style={staggeredFadeInUp(0)}>
-            <h2 className="text-5xl md:text-6xl font-black tracking-tight text-white mb-4">
+          <div className="mb-16" style={staggeredFadeInUp(0)}>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
               Why email is broken
             </h2>
-            <p className="text-lg text-zinc-400 max-w-2xl font-light">
+            <p className="text-lg text-zinc-400 max-w-2xl">
               The problem isn't email itself. It's that we're using a 50-year-old protocol for work that demands real-time intelligence.
             </p>
           </div>
@@ -71,12 +74,12 @@ export default function ProblemStatement() {
               return (
                 <motion.div
                   key={idx}
-                  className="group relative p-8 rounded-lg border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/20 backdrop-blur-sm hover:border-zinc-700 hover:bg-gradient-to-br hover:from-zinc-800/50 hover:to-zinc-900/30 transition-all duration-300"
+                  className="group relative p-8 rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/20 backdrop-blur-sm hover:border-zinc-700 hover:bg-gradient-to-br hover:from-zinc-800/50 hover:to-zinc-900/30 transition-all duration-300"
                   style={staggeredFadeInUp(0.15 + idx * 0.1)}
                   whileHover={{ y: -4 }}
                 >
                   {/* Icon */}
-                  <div className="mb-6 inline-block p-3 rounded-lg bg-zinc-800/50 group-hover:bg-zinc-700/50 transition-colors">
+                  <div className={`mb-6 inline-block p-3 rounded-lg ${card.bgColor} group-hover:bg-zinc-700/50 transition-colors`}>
                     <Icon className={`w-6 h-6 ${card.color}`} />
                   </div>
 
@@ -114,7 +117,7 @@ export default function ProblemStatement() {
                   <h4 className="text-lg font-semibold text-zinc-200">What email shows you</h4>
                 </div>
 
-                <div className="p-6 rounded-lg border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm">
+                <div className="p-6 rounded-xl border border-zinc-800/50 bg-zinc-950/60">
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <p className="text-xs text-zinc-500 uppercase tracking-wider font-medium">From: amazon@amazon.com</p>
@@ -139,7 +142,7 @@ export default function ProblemStatement() {
                   <h4 className="text-lg font-semibold text-zinc-200">What you actually need</h4>
                 </div>
 
-                <div className="p-6 rounded-lg border border-green-600/30 bg-gradient-to-br from-green-950/20 to-green-900/10 backdrop-blur-sm">
+                <div className="p-6 rounded-xl border border-green-500/30 bg-gradient-to-br from-green-950/30 to-green-900/10 backdrop-blur-sm shadow-lg shadow-green-500/5">
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <p className="text-xs text-green-600/70 uppercase tracking-wider font-medium">Delivery Update</p>

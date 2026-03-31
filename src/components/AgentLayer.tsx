@@ -15,8 +15,8 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export default function AgentLayer() {
   return (
-    <section className="py-20 px-6 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto">
+    <section id="agents" className="py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -35,7 +35,7 @@ export default function AgentLayer() {
         </div>
 
         {/* How Agents Work Flow */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-12">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-12">
           <h3 className="text-white font-semibold text-xl mb-12 text-center">
             How agents work
           </h3>
@@ -53,18 +53,18 @@ export default function AgentLayer() {
               return (
                 <div key={idx} className="flex items-center gap-4 flex-shrink-0">
                   <div className="flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-2">
-                      <StepIcon className="w-6 h-6 text-white" />
+                    <div className="w-12 h-12 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-2">
+                      <StepIcon className="w-5 h-5 text-purple-400" />
                     </div>
                     <span className="text-xs text-zinc-400 text-center whitespace-nowrap">
                       {step.label}
                     </span>
                   </div>
                   {idx < 4 && (
-                    <div className="w-8 h-0.5 bg-zinc-600 hidden md:block flex-shrink-0" />
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-purple-500/40 to-purple-500/10 hidden md:block flex-shrink-0" />
                   )}
                   {idx < 4 && (
-                    <div className="w-4 h-0.5 bg-zinc-600 md:hidden flex-shrink-0" />
+                    <div className="w-6 h-0.5 bg-gradient-to-r from-purple-500/40 to-purple-500/10 md:hidden flex-shrink-0" />
                   )}
                 </div>
               );
@@ -84,13 +84,13 @@ function AgentCard({ agent }: { agent: Agent }) {
   const statusText = agent.status === 'active' ? 'Active' : 'Suggested';
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 hover:border-zinc-700 transition-colors">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:border-zinc-700 transition-all duration-200 hover:-translate-y-0.5 min-h-[280px] flex flex-col">
       {/* Icon and Title */}
       <div className="flex items-start justify-between mb-4">
         <div className="text-white">
           {iconMap[agent.icon]}
         </div>
-        <span className={`text-xs font-semibold px-2 py-1 rounded ${statusColor}`}>
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusColor}`}>
           {statusText}
         </span>
       </div>
@@ -103,13 +103,12 @@ function AgentCard({ agent }: { agent: Agent }) {
         {agent.description}
       </p>
 
-      {/* Capabilities */}
-      <div className="space-y-2">
+      {/* Capabilities as pills */}
+      <div className="flex flex-wrap gap-2 mt-auto">
         {agent.capabilities.slice(0, 4).map((capability, idx) => (
-          <div key={idx} className="flex items-start gap-2">
-            <span className="text-zinc-500 text-xs mt-1">•</span>
-            <span className="text-zinc-300 text-xs">{capability}</span>
-          </div>
+          <span key={idx} className="inline-block px-2.5 py-1 rounded-full bg-zinc-800 border border-zinc-700/50 text-zinc-300 text-xs">
+            {capability}
+          </span>
         ))}
       </div>
     </div>

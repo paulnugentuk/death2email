@@ -1,11 +1,11 @@
 'use client';
 
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Cpu, Users } from 'lucide-react';
 
 export default function TechnicalVision() {
   return (
-    <section className="py-20 px-6 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto">
+    <section id="technical" className="py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
@@ -18,8 +18,8 @@ export default function TechnicalVision() {
 
         {/* Two-Phase Roadmap */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {/* Phase 1: Foundation */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 hover:border-zinc-700 transition-colors">
+          {/* Phase 1: Foundation — solid, completed feel */}
+          <div className="bg-zinc-900 border-2 border-green-500/20 rounded-xl p-8 hover:border-green-500/30 transition-colors">
             <h3 className="text-white font-semibold text-xl mb-6">
               Phase 1: Foundation
             </h3>
@@ -38,8 +38,8 @@ export default function TechnicalVision() {
             </div>
           </div>
 
-          {/* Phase 2: Intelligence */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 hover:border-zinc-700 transition-colors">
+          {/* Phase 2: Intelligence — upcoming, dashed border */}
+          <div className="bg-zinc-900 border-2 border-dashed border-zinc-700 rounded-xl p-8 hover:border-zinc-600 transition-colors">
             <h3 className="text-white font-semibold text-xl mb-6">
               Phase 2: Intelligence
             </h3>
@@ -68,7 +68,10 @@ export default function TechnicalVision() {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* AI Capability Shift */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 hover:border-zinc-700 transition-colors">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-700 transition-colors">
+              <div className="mb-4 inline-block p-3 rounded-lg bg-blue-500/10">
+                <Cpu className="w-5 h-5 text-blue-400" />
+              </div>
               <h4 className="text-white font-semibold text-base mb-3">
                 AI capability shift
               </h4>
@@ -78,7 +81,10 @@ export default function TechnicalVision() {
             </div>
 
             {/* Behaviour Shift */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 hover:border-zinc-700 transition-colors">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-700 transition-colors">
+              <div className="mb-4 inline-block p-3 rounded-lg bg-amber-500/10">
+                <Users className="w-5 h-5 text-amber-400" />
+              </div>
               <h4 className="text-white font-semibold text-base mb-3">
                 Behaviour shift
               </h4>

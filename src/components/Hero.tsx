@@ -30,7 +30,7 @@ export default function Hero() {
   return (
     <>
       <style>{fadeInUp}</style>
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
+      <section id="hero" className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0a0a0a]">
         {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/20 via-transparent to-transparent pointer-events-none" />
 
@@ -49,9 +49,9 @@ export default function Hero() {
               </span>
               <span className="relative text-white">
                 email
-                {/* Red glow effect */}
-                <span className="absolute inset-0 blur-2xl bg-red-500/30 -z-10" />
-                <span className="absolute inset-0 blur-xl bg-gradient-to-r from-red-500/40 to-red-600/40 -z-10 animate-pulse" />
+                {/* Red glow effect — subtle hint, not a spotlight */}
+                <span className="absolute inset-0 blur-lg bg-red-500/15 -z-10" />
+                <span className="absolute inset-0 blur-md bg-gradient-to-r from-red-500/20 to-red-600/20 -z-10 animate-pulse" />
               </span>
             </h1>
           </div>
@@ -89,14 +89,21 @@ export default function Hero() {
               animationDelay: '0.45s',
             }}
           >
-            {['Interprets', 'Extracts', 'Acts'].map((pill) => (
+            {[
+              { num: '01', label: 'Interprets' },
+              { num: '02', label: 'Extracts' },
+              { num: '03', label: 'Acts' },
+            ].map((pill) => (
               <motion.div
-                key={pill}
-                className="px-6 py-3 rounded-full border border-zinc-700 bg-zinc-900/50 backdrop-blur-sm hover:border-zinc-600 hover:bg-zinc-800/50 transition-all duration-300"
+                key={pill.label}
+                className="px-8 py-4 rounded-full border border-zinc-700 bg-zinc-900/50 backdrop-blur-sm hover:border-zinc-600 hover:bg-zinc-800/50 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <span className="text-sm md:text-base font-medium text-zinc-200">{pill}</span>
+                <span className="text-sm md:text-base font-medium text-zinc-200">
+                  <span className="text-zinc-500 mr-2 font-mono text-xs">{pill.num}</span>
+                  {pill.label}
+                </span>
               </motion.div>
             ))}
           </div>
@@ -114,6 +121,8 @@ export default function Hero() {
             <ChevronDown className="w-6 h-6 text-zinc-600 hover:text-zinc-400 transition-colors" />
           </motion.div>
         </motion.div>
+        {/* Gradient divider at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
       </section>
     </>
   );

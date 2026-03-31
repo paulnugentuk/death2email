@@ -26,38 +26,42 @@ export default function DesignPrinciples() {
       number: '01',
       title: 'Brutal simplicity',
       description: 'Text-first. Minimal UI. No brand clutter. The interface disappears so the information can breathe.',
+      hoverColor: 'group-hover:border-t-blue-500/50',
     },
     {
       number: '02',
       title: 'Meaning over metadata',
       description: 'No subject lines. No sender emphasis. Focus on intent and action. What matters is what you need to do, not who sent it.',
+      hoverColor: 'group-hover:border-t-purple-500/50',
     },
     {
       number: '03',
       title: 'Action-first',
       description: "Every item drives toward a next step. If there's no action, it doesn't need your attention.",
+      hoverColor: 'group-hover:border-t-green-500/50',
     },
     {
       number: '04',
       title: 'Raw email is secondary',
       description: "\"Open the coffin\" — the original email is always there as a fallback, but it's not where you live anymore.",
+      hoverColor: 'group-hover:border-t-amber-500/50',
     },
   ];
 
   return (
     <>
       <style>{fadeInUp}</style>
-      <section className="relative w-full py-24 px-8 bg-[#0a0a0a] border-t border-zinc-800/50">
+      <section id="principles" className="relative w-full py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/10 via-transparent to-transparent pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto">
+        <div className="relative z-10 max-w-6xl mx-auto">
           {/* Section header */}
-          <div className="mb-20" style={staggeredFadeInUp(0)}>
-            <h2 className="text-5xl md:text-6xl font-black tracking-tight text-white mb-4">
+          <div className="mb-16" style={staggeredFadeInUp(0)}>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
               Design principles
             </h2>
-            <p className="text-lg text-zinc-400 max-w-2xl font-light">
+            <p className="text-lg text-zinc-400 max-w-2xl">
               Every decision flows from these beliefs
             </p>
           </div>
@@ -67,29 +71,24 @@ export default function DesignPrinciples() {
             {principles.map((principle, idx) => (
               <motion.div
                 key={idx}
-                className="group relative p-8 md:p-10 rounded-lg border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/20 backdrop-blur-sm hover:border-zinc-700 hover:bg-gradient-to-br hover:from-zinc-800/50 hover:to-zinc-900/30 transition-all duration-300"
+                className={`group relative p-8 md:p-10 rounded-xl border border-t-2 border-zinc-800 border-t-transparent ${principle.hoverColor} bg-gradient-to-br from-zinc-900/50 to-zinc-900/20 backdrop-blur-sm hover:border-zinc-700 hover:bg-gradient-to-br hover:from-zinc-800/50 hover:to-zinc-900/30 transition-all duration-300 overflow-hidden`}
                 style={staggeredFadeInUp(0.15 + idx * 0.1)}
                 whileHover={{ y: -4 }}
               >
-                {/* Large faded number */}
-                <div className="mb-6 md:mb-8">
-                  <span className="text-6xl md:text-7xl font-black text-zinc-800/40 tracking-tight">
-                    {principle.number}
-                  </span>
-                </div>
+                {/* Large watermark number */}
+                <span className="absolute top-2 right-4 text-8xl md:text-9xl font-black text-zinc-800/20 tracking-tight leading-none pointer-events-none select-none">
+                  {principle.number}
+                </span>
 
                 {/* Title */}
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
+                <h3 className="relative text-xl md:text-2xl font-bold text-white mb-4 mt-6">
                   {principle.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm md:text-base text-zinc-400 leading-relaxed font-light">
+                <p className="relative text-sm md:text-base text-zinc-400 leading-relaxed font-light">
                   {principle.description}
                 </p>
-
-                {/* Border accent on hover */}
-                <div className="absolute inset-0 rounded-lg border border-zinc-600/0 group-hover:border-zinc-600/30 transition-all duration-300 pointer-events-none" />
               </motion.div>
             ))}
           </div>
