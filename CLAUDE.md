@@ -24,9 +24,11 @@ git add -A && git commit -m "improve: <description>" && git push
 - **Text**: white for headings, zinc-400 for body, zinc-500 for secondary
 - **Cards**: bg-zinc-900/50, border border-zinc-800, rounded-xl
 - **Accent colors**: blue-500 (travel), purple-500 (shopping), green-500 (finance), pink-500 (events), red-500 (urgent), amber-500 (suggested)
-- **Font**: Inter (loaded via next/font/google)
-- **Spacing**: Generous. Every section should have py-24 px-6 md:px-8 minimum. Max-w-6xl mx-auto for content.
-- **Aesthetic target**: Linear.app, Vercel.com, Raycast.com — premium, minimal, confident
+- **Display font**: Instrument Serif (loaded via next/font/google, CSS var `--font-display`, class `.font-display`)
+- **Body font**: Outfit (loaded via next/font/google, CSS var `--font-body`, default body font)
+- **Spacing**: Generous. Every section should have py-28 md:py-36 px-6 md:px-8 minimum. Max-w-5xl mx-auto for content.
+- **Aesthetic target**: Stripe annual letters meets Linear.app — editorial, confident, premium
+- **Texture**: Subtle noise grain overlay via CSS SVG filter on body::after
 
 ## Critical Rules
 1. **Content must be visible without JS animations.** Never use framer-motion `initial={{ opacity: 0 }}`. Use CSS @keyframes for entrance effects.

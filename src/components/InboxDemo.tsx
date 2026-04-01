@@ -2,95 +2,70 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Zap } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { transformedEmails } from '../data/mock-emails';
-import { TransformedEmail } from '../data/types';
 
 type ViewMode = 'traditional' | 'death2email';
 
+const urgencyColors: Record<string, string> = {
+  critical: 'bg-red-500',
+  high: 'bg-orange-500',
+  medium: 'bg-amber-500',
+  low: 'bg-zinc-600',
+};
+
+const workspaceColors: Record<string, string> = {
+  Travel: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
+  Shopping: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
+  Finance: 'text-green-400 bg-green-500/10 border-green-500/20',
+  Events: 'text-pink-400 bg-pink-500/10 border-pink-500/20',
+};
+
 export default function InboxDemo() {
   const [viewMode, setViewMode] = useState<ViewMode>('traditional');
-  const [expandedEmailId, setExpandedEmailId] = useState<string | null>(null);
-  const [showRawEmail, setShowRawEmail] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showRaw, setShowRaw] = useState<string | null>(null);
 
   const emails = transformedEmails.slice(0, 8);
-
   const actionCount = emails.filter(e => e.urgency === 'critical' || e.urgency === 'high').length;
   const workspaceCount = new Set(emails.map(e => e.workspace)).size;
 
-  const getUrgencyDot = (urgency: string): React.ReactNode => {
-    const dotColor = {
-      critical: 'bg-red-500',
-      high: 'bg-orange-500',
-      medium: 'bg-yellow-500',
-      low: 'bg-blue-500',
-    }[urgency] || 'bg-blue-500';
-
-    const shouldPulse = urgency === 'critical' || urgency === 'high';
-
-    return (
-      <div className="relative flex-shrink-0">
-        <div className={`w-2.5 h-2.5 rounded-full ${dotColor}`} />
-        {shouldPulse && (
-          <div className={`absolute inset-0 w-2.5 h-2.5 rounded-full ${dotColor} animate-ping opacity-75`} />
-        )}
-      </div>
-    );
+  const toggleExpanded = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+    if (showRaw === id) setShowRaw(null);
   };
 
-  const getWorkspaceTagColor = (workspace: string): string => {
-    const colors: Record<string, string> = {
-      Travel: 'bg-blue-500/20 text-blue-400',
-      Shopping: 'bg-purple-500/20 text-purple-400',
-      Finance: 'bg-green-500/20 text-green-400',
-      Events: 'bg-pink-500/20 text-pink-400',
-    };
-    return colors[workspace] || 'bg-zinc-700/50 text-zinc-300';
-  };
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMins / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  };
-
-  const toggleExpanded = (emailId: string) => {
-    setExpandedEmailId(expandedEmailId === emailId ? null : emailId);
-    if (showRawEmail === emailId) {
-      setShowRawEmail(null);
-    }
+  const formatDate = (ts: string) => {
+    const diff = Math.floor((Date.now() - new Date(ts).getTime()) / 86400000);
+    if (diff < 1) return 'Today';
+    if (diff < 7) return `${diff}d ago`;
+    return new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
   };
 
   return (
-    <section id="demo" className="py-24 md:py-32 bg-[#0a0a0a]">
+    <section id="demo" className="py-28 md:py-36 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto px-6 md:px-8">
-        {/* Section Header */}
+        {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">See the transformation</h2>
-          <p className="text-lg text-zinc-400">
-            Click any email to see how death2email turns noise into action
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            See the transformation
+          </h2>
+          <p className="text-base text-zinc-500 max-w-md mx-auto">
+            The same emails. One as noise, one as signal.
           </p>
         </div>
 
-        {/* Mobile Tab Switcher (visible on lg and below) */}
-        <div className="lg:hidden mb-8 flex items-center justify-center">
-          <div className="inline-flex bg-zinc-800 rounded-lg p-1 border border-zinc-700">
+        {/* Mobile tabs */}
+        <div className="lg:hidden mb-6 flex justify-center">
+          <div className="inline-flex bg-zinc-900 rounded-lg p-1 border border-zinc-800">
             {(['traditional', 'death2email'] as const).map((mode) => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
-                className={`px-4 py-2 rounded font-medium text-sm transition-colors ${
+                className={`px-4 py-2 rounded-md text-sm transition-all ${
                   viewMode === mode
-                    ? 'bg-zinc-700 text-white'
-                    : 'text-zinc-400 hover:text-zinc-300'
+                    ? 'bg-zinc-800 text-white'
+                    : 'text-zinc-500 hover:text-zinc-400'
                 }`}
               >
                 {mode === 'traditional' ? 'Traditional' : 'death2email'}
@@ -99,384 +74,280 @@ export default function InboxDemo() {
           </div>
         </div>
 
-        {/* Desktop: Side-by-side columns */}
-        <div className="hidden lg:grid lg:grid-cols-2 gap-8">
-          {/* Left Column: Traditional Inbox */}
-          <div className="flex flex-col">
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden flex flex-col h-full">
-              {/* Header */}
-              <div className="bg-zinc-800 px-6 py-4 border-b border-zinc-700">
-                <h3 className="text-white font-semibold text-lg">Traditional Inbox</h3>
+        {/* Desktop side-by-side */}
+        <div className="hidden lg:grid lg:grid-cols-2 gap-6">
+          {/* LEFT — Traditional (deliberately flat) */}
+          <div>
+            <div className="rounded-xl border border-zinc-800/50 bg-zinc-950/50 overflow-hidden">
+              <div className="px-5 py-3.5 border-b border-zinc-800/50 bg-zinc-900/30">
+                <span className="text-sm text-zinc-500 font-medium">Inbox</span>
+                <span className="text-xs text-zinc-700 ml-2">({emails.length})</span>
               </div>
-
-              {/* Email List */}
-              <div className="flex-1 overflow-y-auto divide-y divide-zinc-800">
+              <div className="divide-y divide-zinc-800/30">
                 {emails.map((email) => (
-                  <div
-                    key={email.id}
-                    className="px-6 py-4 hover:bg-zinc-800/50 transition-colors border-b border-zinc-800 last:border-b-0"
-                  >
-                    <div className="text-sm font-medium text-zinc-300 truncate">
-                      {email.rawEmail.from.split('@')[0]}
+                  <div key={email.id} className="px-5 py-3.5 hover:bg-zinc-900/30 transition-colors">
+                    <div className="flex items-baseline justify-between gap-4 mb-1">
+                      <span className="text-xs text-zinc-600 font-mono truncate">
+                        {email.rawEmail.from}
+                      </span>
+                      <span className="text-[10px] text-zinc-700 flex-shrink-0">{formatDate(email.rawEmail.timestamp)}</span>
                     </div>
-                    <div className="text-sm text-zinc-400 truncate mt-1.5">
+                    <p className="text-sm text-zinc-400 truncate leading-snug">
                       {email.rawEmail.subject}
-                    </div>
-                    <div className="text-xs text-zinc-500 mt-2">
-                      {formatDate(email.rawEmail.timestamp)}
-                    </div>
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Right Column: death2email */}
-          <div className="flex flex-col">
-            <div className="bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden flex flex-col h-full shadow-2xl shadow-purple-500/10">
-              {/* Header with glow */}
-              <div className="bg-gradient-to-r from-zinc-800 to-zinc-800 px-6 py-4 border-b border-zinc-700">
-                <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-                  death2email
-                  <span className="inline-block w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                </h3>
+          {/* RIGHT — death2email (alive) */}
+          <div>
+            <div className="rounded-xl border border-purple-500/15 bg-zinc-950/50 overflow-hidden shadow-xl shadow-purple-500/[0.04]">
+              {/* Header */}
+              <div className="px-5 py-3.5 border-b border-zinc-800/50 bg-zinc-900/30 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-sm text-white font-medium">death2email</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500 dot-breathe" />
+                </div>
+                <span className="text-[10px] text-zinc-600">{emails.length} processed</span>
               </div>
 
-              {/* Summary Stats Bar */}
-              {!expandedEmailId && (
-                <div className="mx-4 mt-4 p-4 rounded-lg bg-purple-500/5 border border-purple-500/10">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="text-zinc-400">
-                      <span className="text-white font-semibold">{emails.length}</span> emails processed
-                    </div>
-                    <div className="text-zinc-400">
-                      <span className="text-purple-400 font-semibold">{actionCount}</span> actions needed
-                    </div>
-                    <div className="text-zinc-400">
-                      <span className="text-zinc-300 font-semibold">{workspaceCount}</span> workspaces
-                    </div>
-                  </div>
+              {/* Stats bar */}
+              {!expandedId && (
+                <div className="px-5 py-3 border-b border-zinc-800/30 bg-purple-500/[0.02] flex items-center gap-6 text-xs">
+                  <span className="text-zinc-500">
+                    <span className="text-purple-400 font-medium">{actionCount}</span> actions needed
+                  </span>
+                  <span className="text-zinc-500">
+                    <span className="text-zinc-400 font-medium">{workspaceCount}</span> workspaces
+                  </span>
                 </div>
               )}
 
-              {/* Email List */}
-              <div className="flex-1 overflow-y-auto space-y-3 p-4">
-                {emails.map((email) => (
-                  <div key={email.id} className="space-y-2">
-                    {/* Email Card */}
-                    <motion.div
+              {/* Email list */}
+              <div className="p-3 space-y-2 max-h-[520px] overflow-y-auto">
+                {emails.map((email) => {
+                  const isExpanded = expandedId === email.id;
+                  const dotColor = urgencyColors[email.urgency] || 'bg-zinc-600';
+                  const tagColor = workspaceColors[email.workspace] || 'text-zinc-400 bg-zinc-800 border-zinc-700';
+                  const shouldPulse = email.urgency === 'critical' || email.urgency === 'high';
+
+                  return (
+                    <div
+                      key={email.id}
                       onClick={() => toggleExpanded(email.id)}
-                      className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-4 cursor-pointer hover:border-zinc-600 hover:bg-zinc-800/70 transition-all group"
+                      className={`rounded-lg border p-3.5 cursor-pointer transition-all duration-200 ${
+                        isExpanded
+                          ? 'border-zinc-700 bg-zinc-900/60'
+                          : 'border-zinc-800/40 bg-zinc-900/20 hover:border-zinc-700/50 hover:bg-zinc-900/40'
+                      }`}
                     >
-                      {/* Header Row */}
+                      {/* Top row */}
                       <div className="flex items-start gap-3">
-                        {/* Urgency Dot */}
-                        {getUrgencyDot(email.urgency)}
+                        {/* Urgency dot */}
+                        <div className="relative mt-1.5 flex-shrink-0">
+                          <div className={`w-2 h-2 rounded-full ${dotColor}`} />
+                          {shouldPulse && (
+                            <div className={`absolute inset-0 w-2 h-2 rounded-full ${dotColor} animate-ping opacity-60`} />
+                          )}
+                        </div>
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <div className="text-sm font-semibold text-white leading-tight">
-                            {email.aiSummary.substring(0, 50)}
-                            {email.aiSummary.length > 50 ? '...' : ''}
-                          </div>
-
-                          {/* Tags Row */}
-                          <div className="flex items-center gap-2 mt-3 flex-wrap">
-                            <span
-                              className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getWorkspaceTagColor(
-                                email.workspace
-                              )}`}
-                            >
+                          <p className="text-sm text-white leading-snug mb-2">
+                            {email.aiSummary.substring(0, 55)}{email.aiSummary.length > 55 ? '...' : ''}
+                          </p>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${tagColor}`}>
                               {email.workspace}
                             </span>
                             {email.mission && (
-                              <span className="text-xs text-zinc-400">
-                                {email.mission}
-                              </span>
+                              <span className="text-[10px] text-zinc-600">{email.mission}</span>
                             )}
                           </div>
                         </div>
 
                         {/* Chevron */}
                         <ChevronDown
-                          size={18}
-                          className={`text-zinc-500 flex-shrink-0 transition-transform ${
-                            expandedEmailId === email.id ? 'rotate-180' : ''
-                          }`}
+                          size={14}
+                          className={`text-zinc-600 flex-shrink-0 mt-1 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                         />
                       </div>
 
-                      {/* Expanded Details */}
+                      {/* Expanded detail */}
                       <AnimatePresence>
-                        {expandedEmailId === email.id && (
+                        {isExpanded && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="mt-4 pt-4 border-t border-zinc-700 space-y-4 overflow-hidden"
+                            className="overflow-hidden"
                           >
-                            {/* Full Summary */}
-                            <p className="text-sm text-zinc-300 leading-relaxed">
-                              {email.aiSummary}
-                            </p>
+                            <div className="mt-4 pt-4 border-t border-zinc-800/50 space-y-4">
+                              {/* Full summary */}
+                              <p className="text-sm text-zinc-300 leading-relaxed font-light">
+                                {email.aiSummary}
+                              </p>
 
-                            {/* Extracted Data Grid */}
-                            {email.extractedData &&
-                              Object.keys(email.extractedData).length > 0 && (
-                                <div className="bg-zinc-900/50 rounded-lg p-3 space-y-2.5">
-                                  {Object.entries(email.extractedData)
-                                    .slice(0, 4)
-                                    .map(([key, value]) => (
-                                      <div
-                                        key={key}
-                                        className="flex justify-between items-start gap-3"
-                                      >
-                                        <span className="text-xs text-zinc-500 capitalize">
+                              {/* Extracted data grid */}
+                              {email.extractedData && Object.keys(email.extractedData).length > 0 && (
+                                <div className="rounded-lg bg-zinc-950/50 border border-zinc-800/30 p-3">
+                                  <div className="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                                    {Object.entries(email.extractedData).slice(0, 6).map(([key, value]) => (
+                                      <div key={key}>
+                                        <span className="text-[10px] text-zinc-600 uppercase tracking-wider block mb-0.5">
                                           {key.replace(/([A-Z])/g, ' $1').trim()}
                                         </span>
-                                        <span className="text-xs text-zinc-200 font-medium text-right">
-                                          {value}
-                                        </span>
+                                        <span className="text-xs text-zinc-300">{value}</span>
                                       </div>
                                     ))}
+                                  </div>
                                 </div>
                               )}
 
-                            {/* Raw Email Toggle */}
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setShowRawEmail(
-                                  showRawEmail === email.id ? null : email.id
-                                );
-                              }}
-                              className="text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1 transition-colors"
-                            >
-                              {showRawEmail === email.id ? '⬆' : '⬇'} Open the
-                              coffin
-                            </button>
+                              {/* Raw email toggle */}
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowRaw(showRaw === email.id ? null : email.id);
+                                }}
+                                className="text-[11px] text-zinc-600 hover:text-zinc-400 transition-colors"
+                              >
+                                {showRaw === email.id ? '↑ Close' : '↓ Open the coffin'}
+                              </button>
 
-                            {/* Raw Email Content */}
-                            {showRawEmail === email.id && (
-                              <div className="bg-black/40 rounded-lg p-3 font-mono text-xs space-y-2 max-h-32 overflow-y-auto border border-zinc-800">
-                                <div>
-                                  <span className="text-zinc-500">From:</span>{' '}
-                                  <span className="text-zinc-300">
-                                    {email.rawEmail.from}
-                                  </span>
+                              {/* Raw email */}
+                              {showRaw === email.id && (
+                                <div className="rounded-lg bg-black/30 border border-zinc-800/30 p-3 font-mono text-[11px] text-zinc-600 space-y-1 max-h-28 overflow-y-auto">
+                                  <p><span className="text-zinc-700">From:</span> {email.rawEmail.from}</p>
+                                  <p><span className="text-zinc-700">Subject:</span> {email.rawEmail.subject}</p>
+                                  <p className="text-zinc-700 mt-1 line-clamp-3">{email.rawEmail.body}</p>
                                 </div>
-                                <div>
-                                  <span className="text-zinc-500">Subject:</span>{' '}
-                                  <span className="text-zinc-300">
-                                    {email.rawEmail.subject}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="text-zinc-500">Body:</span>
-                                  <p className="text-zinc-400 mt-1 line-clamp-4">
-                                    {email.rawEmail.body}
-                                  </p>
-                                </div>
-                              </div>
-                            )}
+                              )}
 
-                            {/* Primary Action Button */}
-                            <button className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
-                              {email.action}
-                            </button>
+                              {/* Action button */}
+                              <button
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
+                              >
+                                {email.action}
+                              </button>
+                            </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    </motion.div>
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Mobile: Tab-based view */}
+        {/* Mobile view */}
         <div className="lg:hidden">
-          <AnimatePresence mode="wait">
-            {viewMode === 'traditional' ? (
-              <motion.div
-                key="traditional-mobile"
-                className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden"
-              >
-                {/* Header */}
-                <div className="bg-zinc-800 px-6 py-4 border-b border-zinc-700">
-                  <h3 className="text-white font-semibold text-lg">
-                    Traditional Inbox
-                  </h3>
-                </div>
+          {viewMode === 'traditional' ? (
+            <div className="rounded-xl border border-zinc-800/50 bg-zinc-950/50 overflow-hidden">
+              <div className="px-5 py-3.5 border-b border-zinc-800/50 bg-zinc-900/30">
+                <span className="text-sm text-zinc-500 font-medium">Inbox</span>
+              </div>
+              <div className="divide-y divide-zinc-800/30">
+                {emails.map((email) => (
+                  <div key={email.id} className="px-5 py-3.5">
+                    <span className="text-xs text-zinc-600 font-mono">{email.rawEmail.from.split('@')[0]}</span>
+                    <p className="text-sm text-zinc-400 truncate mt-1">{email.rawEmail.subject}</p>
+                    <span className="text-[10px] text-zinc-700 mt-1 block">{formatDate(email.rawEmail.timestamp)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-purple-500/15 bg-zinc-950/50 overflow-hidden shadow-xl shadow-purple-500/[0.04]">
+              <div className="px-5 py-3.5 border-b border-zinc-800/50 bg-zinc-900/30 flex items-center gap-2.5">
+                <span className="text-sm text-white font-medium">death2email</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 dot-breathe" />
+              </div>
+              <div className="p-3 space-y-2">
+                {emails.map((email) => {
+                  const isExpanded = expandedId === email.id;
+                  const dotColor = urgencyColors[email.urgency] || 'bg-zinc-600';
+                  const tagColor = workspaceColors[email.workspace] || 'text-zinc-400 bg-zinc-800 border-zinc-700';
 
-                {/* Email List */}
-                <div className="divide-y divide-zinc-800">
-                  {emails.map((email) => (
+                  return (
                     <div
                       key={email.id}
-                      className="px-6 py-4 hover:bg-zinc-800/50 transition-colors"
+                      onClick={() => toggleExpanded(email.id)}
+                      className={`rounded-lg border p-3.5 cursor-pointer transition-all ${
+                        isExpanded ? 'border-zinc-700 bg-zinc-900/60' : 'border-zinc-800/40 bg-zinc-900/20'
+                      }`}
                     >
-                      <div className="text-sm font-medium text-zinc-300 truncate">
-                        {email.rawEmail.from.split('@')[0]}
-                      </div>
-                      <div className="text-sm text-zinc-400 truncate mt-1.5">
-                        {email.rawEmail.subject}
-                      </div>
-                      <div className="text-xs text-zinc-500 mt-2">
-                        {formatDate(email.rawEmail.timestamp)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="d2e-mobile"
-                className="bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden"
-              >
-                {/* Header */}
-                <div className="bg-gradient-to-r from-zinc-800 to-zinc-800 px-6 py-4 border-b border-zinc-700">
-                  <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-                    death2email
-                    <span className="inline-block w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                  </h3>
-                </div>
-
-                {/* Email List */}
-                <div className="space-y-3 p-4">
-                  {emails.map((email) => (
-                    <div key={email.id}>
-                      <motion.div
-                        onClick={() => toggleExpanded(email.id)}
-                        className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-4 cursor-pointer hover:border-zinc-600 hover:bg-zinc-800/70 transition-all"
-                      >
-                        {/* Header Row */}
-                        <div className="flex items-start gap-3">
-                          {getUrgencyDot(email.urgency)}
-
-                          <div className="flex-1 min-w-0">
-                            <div className="text-sm font-semibold text-white leading-tight">
-                              {email.aiSummary.substring(0, 45)}
-                              {email.aiSummary.length > 45 ? '...' : ''}
-                            </div>
-
-                            <div className="flex items-center gap-2 mt-3 flex-wrap">
-                              <span
-                                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getWorkspaceTagColor(
-                                  email.workspace
-                                )}`}
-                              >
-                                {email.workspace}
-                              </span>
-                            </div>
-                          </div>
-
-                          <ChevronDown
-                            size={18}
-                            className={`text-zinc-500 flex-shrink-0 transition-transform ${
-                              expandedEmailId === email.id ? 'rotate-180' : ''
-                            }`}
-                          />
+                      <div className="flex items-start gap-3">
+                        <div className={`w-2 h-2 rounded-full ${dotColor} mt-1.5 flex-shrink-0`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white leading-snug mb-2">
+                            {email.aiSummary.substring(0, 50)}{email.aiSummary.length > 50 ? '...' : ''}
+                          </p>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-medium ${tagColor}`}>
+                            {email.workspace}
+                          </span>
                         </div>
+                        <ChevronDown
+                          size={14}
+                          className={`text-zinc-600 flex-shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                        />
+                      </div>
 
-                        {/* Expanded Details */}
-                        <AnimatePresence>
-                          {expandedEmailId === email.id && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: 'auto', opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="mt-4 pt-4 border-t border-zinc-700 space-y-4 overflow-hidden"
-                            >
-                              <p className="text-sm text-zinc-300 leading-relaxed">
-                                {email.aiSummary}
-                              </p>
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-4 pt-4 border-t border-zinc-800/50 space-y-4">
+                              <p className="text-sm text-zinc-300 leading-relaxed font-light">{email.aiSummary}</p>
 
-                              {email.extractedData &&
-                                Object.keys(email.extractedData).length > 0 && (
-                                  <div className="bg-zinc-900/50 rounded-lg p-3 space-y-2.5">
-                                    {Object.entries(email.extractedData)
-                                      .slice(0, 3)
-                                      .map(([key, value]) => (
-                                        <div
-                                          key={key}
-                                          className="flex justify-between items-start gap-3"
-                                        >
-                                          <span className="text-xs text-zinc-500 capitalize">
-                                            {key
-                                              .replace(/([A-Z])/g, ' $1')
-                                              .trim()}
-                                          </span>
-                                          <span className="text-xs text-zinc-200 font-medium text-right">
-                                            {value}
-                                          </span>
-                                        </div>
-                                      ))}
-                                  </div>
-                                )}
-
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setShowRawEmail(
-                                    showRawEmail === email.id ? null : email.id
-                                  );
-                                }}
-                                className="text-xs text-purple-400 hover:text-purple-300 font-medium flex items-center gap-1"
-                              >
-                                {showRawEmail === email.id ? '⬆' : '⬇'} Open
-                                the coffin
-                              </button>
-
-                              {showRawEmail === email.id && (
-                                <div className="bg-black/40 rounded-lg p-3 font-mono text-xs space-y-2 max-h-32 overflow-y-auto border border-zinc-800">
-                                  <div>
-                                    <span className="text-zinc-500">From:</span>{' '}
-                                    <span className="text-zinc-300">
-                                      {email.rawEmail.from}
-                                    </span>
-                                  </div>
-                                  <div>
-                                    <span className="text-zinc-500">Subject:</span>{' '}
-                                    <span className="text-zinc-300">
-                                      {email.rawEmail.subject}
-                                    </span>
-                                  </div>
-                                  <div>
-                                    <span className="text-zinc-500">Body:</span>
-                                    <p className="text-zinc-400 mt-1 line-clamp-3">
-                                      {email.rawEmail.body}
-                                    </p>
+                              {email.extractedData && Object.keys(email.extractedData).length > 0 && (
+                                <div className="rounded-lg bg-zinc-950/50 border border-zinc-800/30 p-3">
+                                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                    {Object.entries(email.extractedData).slice(0, 4).map(([key, value]) => (
+                                      <div key={key}>
+                                        <span className="text-[10px] text-zinc-600 uppercase tracking-wider block mb-0.5">
+                                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                                        </span>
+                                        <span className="text-xs text-zinc-300">{value}</span>
+                                      </div>
+                                    ))}
                                   </div>
                                 </div>
                               )}
 
-                              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors">
+                              <button
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full bg-purple-600 hover:bg-purple-500 text-white text-sm font-medium py-2.5 rounded-lg transition-colors"
+                              >
                                 {email.action}
                               </button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Help Text */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-zinc-400 max-w-2xl mx-auto">
-            <Zap className="inline-block w-4 h-4 mr-1 text-yellow-500" />
-            Click any email to expand and see the full transformation. Use the tabs on mobile to
-            switch views.
-          </p>
-        </div>
+        {/* Hint */}
+        <p className="text-center text-xs text-zinc-700 mt-10">
+          Click any email on the right to see the full transformation
+        </p>
       </div>
     </section>
   );

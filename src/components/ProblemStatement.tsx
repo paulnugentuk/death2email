@@ -1,173 +1,127 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { AlertTriangle, Brain, Zap, CheckCircle2, XCircle } from 'lucide-react';
+import { XCircle, CheckCircle2 } from 'lucide-react';
 
-const fadeInUp = `
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-const staggeredFadeInUp = (delay: number) => ({
-  animation: `fadeInUp 0.8s ease forwards`,
-  animationDelay: `${delay}s`,
-});
+const problems = [
+  {
+    num: '01',
+    title: 'Structural',
+    body: 'Built for messaging, not task execution. Each email is an isolated unit with no system-level context. No native concept of workflows, deadlines, or dependencies.',
+    accent: 'text-red-500',
+  },
+  {
+    num: '02',
+    title: 'Cognitive',
+    body: 'Cognitive overload is the default state. Important updates buried in threads. Manual effort to extract meaning and decide on action. The user does the work the system should do.',
+    accent: 'text-amber-500',
+  },
+  {
+    num: '03',
+    title: 'Architectural',
+    body: 'Most emails are system notifications — orders, bookings, alerts — still processed like human conversations. The protocol treats a flight delay the same as a love letter.',
+    accent: 'text-blue-500',
+  },
+];
 
 export default function ProblemStatement() {
-  const problemCards = [
-    {
-      icon: AlertTriangle,
-      title: 'Structural Issues',
-      description:
-        'Built for messaging, not task execution. Each email is an isolated unit with no system-level context. No native concept of workflows.',
-      color: 'text-red-400',
-      bgColor: 'bg-red-500/10',
-    },
-    {
-      icon: Brain,
-      title: 'User Pain',
-      description:
-        'Cognitive overload. Important updates buried in threads. Manual effort to extract meaning and act.',
-      color: 'text-amber-400',
-      bgColor: 'bg-amber-500/10',
-    },
-    {
-      icon: Zap,
-      title: 'Modern Mismatch',
-      description:
-        'Most emails are system notifications — orders, bookings, alerts — still processed like human conversations.',
-      color: 'text-blue-400',
-      bgColor: 'bg-blue-500/10',
-    },
-  ];
-
   return (
-    <>
-      <style>{fadeInUp}</style>
-      <section id="problem" className="relative w-full py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/10 via-transparent to-transparent pointer-events-none" />
+    <section id="problem" className="relative py-28 md:py-36 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="max-w-5xl mx-auto">
+        {/* Section heading */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+            Why email is broken
+          </h2>
+          <p className="text-base text-zinc-500 max-w-xl">
+            The problem isn&apos;t email itself. It&apos;s that we&apos;re using a 50-year-old protocol for work that demands real-time intelligence.
+          </p>
+        </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto">
-          {/* Section title */}
-          <div className="mb-16" style={staggeredFadeInUp(0)}>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
-              Why email is broken
-            </h2>
-            <p className="text-lg text-zinc-400 max-w-2xl">
-              The problem isn't email itself. It's that we're using a 50-year-old protocol for work that demands real-time intelligence.
-            </p>
-          </div>
+        {/* Numbered problems — editorial layout */}
+        <div className="space-y-16 md:space-y-20 mb-28">
+          {problems.map((p) => (
+            <div key={p.num} className="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-4 md:gap-8">
+              {/* Number */}
+              <span className={`font-display text-5xl md:text-6xl ${p.accent} opacity-30 leading-none`}>
+                {p.num}
+              </span>
+              {/* Content */}
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3">{p.title}</h3>
+                <p className="text-base text-zinc-400 leading-relaxed font-light max-w-2xl">
+                  {p.body}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
 
-          {/* Three-column problem cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-            {problemCards.map((card, idx) => {
-              const Icon = card.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  className="group relative p-8 rounded-xl border border-zinc-800 bg-gradient-to-br from-zinc-900/50 to-zinc-900/20 backdrop-blur-sm hover:border-zinc-700 hover:bg-gradient-to-br hover:from-zinc-800/50 hover:to-zinc-900/30 transition-all duration-300"
-                  style={staggeredFadeInUp(0.15 + idx * 0.1)}
-                  whileHover={{ y: -4 }}
-                >
-                  {/* Icon */}
-                  <div className={`mb-6 inline-block p-3 rounded-lg ${card.bgColor} group-hover:bg-zinc-700/50 transition-colors`}>
-                    <Icon className={`w-6 h-6 ${card.color}`} />
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent mb-28" />
+
+        {/* Comparison — Signal vs Noise */}
+        <div>
+          <h3 className="font-display italic text-2xl md:text-3xl text-zinc-200 mb-14 text-center">
+            The gap between signal and noise
+          </h3>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            {/* BAD — what email shows */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <XCircle className="w-4 h-4 text-zinc-600" />
+                <span className="text-sm text-zinc-500 uppercase tracking-wider font-medium">What email shows you</span>
+              </div>
+
+              <div className="p-6 rounded-xl border border-zinc-800/40 bg-zinc-950/70">
+                <div className="font-mono text-xs space-y-3">
+                  <p className="text-zinc-600">From: amazon@amazon.com</p>
+                  <p className="text-zinc-400 text-sm">Your order has shipped</p>
+                  <div className="pt-3 border-t border-zinc-800/50">
+                    <p className="text-zinc-600 leading-relaxed">
+                      Order #123–456–789 has left our facility and is on its way to you.
+                      Track your package at amazon.com.
+                    </p>
                   </div>
+                </div>
+              </div>
+              <p className="mt-4 text-xs text-zinc-600 font-light">Generic. Context-free. Requires manual action.</p>
+            </div>
 
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-white mb-3">{card.title}</h3>
+            {/* GOOD — what you need */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <CheckCircle2 className="w-4 h-4 text-green-500/70" />
+                <span className="text-sm text-zinc-500 uppercase tracking-wider font-medium">What you actually need</span>
+              </div>
 
-                  {/* Description */}
-                  <p className="text-sm md:text-base text-zinc-400 leading-relaxed font-light">
-                    {card.description}
+              <motion.div
+                className="p-6 rounded-xl border border-green-500/20 bg-gradient-to-br from-green-950/20 to-green-900/5 shadow-lg shadow-green-500/[0.03]"
+                whileHover={{ borderColor: 'rgba(34, 197, 94, 0.3)' }}
+              >
+                <div className="space-y-3">
+                  <p className="text-[10px] text-green-600/60 uppercase tracking-widest font-medium">Delivery Update</p>
+                  <p className="text-lg font-semibold text-green-200/90">
+                    Your Nike Air Max 90s arrive tomorrow 2–4pm
                   </p>
-
-                  {/* Border accent on hover */}
-                  <div className="absolute inset-0 rounded-lg border border-zinc-600/0 group-hover:border-zinc-600/30 transition-all duration-300 pointer-events-none" />
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-zinc-700 to-transparent my-20" />
-
-          {/* Visual Comparison */}
-          <div className="mt-20">
-            <h3 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-12 text-center" style={staggeredFadeInUp(0.5)}>
-              The gap between signal and noise
-            </h3>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* What email shows you */}
-              <div style={staggeredFadeInUp(0.65)}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-zinc-800">
-                    <XCircle className="w-5 h-5 text-red-400" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-zinc-200">What email shows you</h4>
-                </div>
-
-                <div className="p-6 rounded-xl border border-zinc-800/50 bg-zinc-950/60">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-xs text-zinc-500 uppercase tracking-wider font-medium">From: amazon@amazon.com</p>
-                      <p className="text-sm font-semibold text-zinc-300">Your order has shipped</p>
+                  <div className="pt-3 border-t border-green-500/10 grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="text-zinc-600 text-xs block mb-0.5">Carrier</span>
+                      <span className="text-green-200/70">DHL Express</span>
                     </div>
-                    <div className="pt-4 border-t border-zinc-700/50">
-                      <p className="text-xs text-zinc-500">
-                        Order #123–456–789 has left our facility and is on its way to you. Track your package at amazon.com.
-                      </p>
+                    <div>
+                      <span className="text-zinc-600 text-xs block mb-0.5">Action</span>
+                      <span className="text-green-200/70">Add to calendar</span>
                     </div>
                   </div>
                 </div>
-                <p className="mt-4 text-sm text-zinc-500 font-light">Generic. Context-free. Requires manual action.</p>
-              </div>
-
-              {/* What you actually need */}
-              <div style={staggeredFadeInUp(0.8)}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 rounded-lg bg-zinc-800">
-                    <CheckCircle2 className="w-5 h-5 text-green-400" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-zinc-200">What you actually need</h4>
-                </div>
-
-                <div className="p-6 rounded-xl border border-green-500/30 bg-gradient-to-br from-green-950/30 to-green-900/10 backdrop-blur-sm shadow-lg shadow-green-500/5">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <p className="text-xs text-green-600/70 uppercase tracking-wider font-medium">Delivery Update</p>
-                      <p className="text-lg font-bold text-green-300">
-                        Your Nike Air Max 90s arrive tomorrow 2–4pm
-                      </p>
-                    </div>
-                    <div className="pt-4 border-t border-green-600/20">
-                      <div className="flex flex-col gap-3 text-sm text-green-200/80">
-                        <p>
-                          <span className="font-medium">Tracking:</span> DHL Express
-                        </p>
-                        <p>
-                          <span className="font-medium">Action:</span> Add to calendar
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <p className="mt-4 text-sm text-zinc-500 font-light">Specific. Actionable. Integrated.</p>
-              </div>
+              </motion.div>
+              <p className="mt-4 text-xs text-zinc-600 font-light">Specific. Actionable. Integrated.</p>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

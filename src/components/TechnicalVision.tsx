@@ -1,95 +1,77 @@
 'use client';
 
-import { CheckCircle, Cpu, Users } from 'lucide-react';
+import { CheckCircle, Circle, Cpu, Users } from 'lucide-react';
 
 export default function TechnicalVision() {
   return (
-    <section id="technical" className="py-24 md:py-32 px-6 md:px-8 bg-[#0a0a0a]">
-      <div className="max-w-6xl mx-auto">
+    <section id="technical" className="py-28 md:py-36 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Technical approach
           </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl">
-            A two-phase roadmap that builds from solid foundations to intelligent automation.
+          <p className="text-base text-zinc-500 max-w-xl">
+            A two-phase roadmap from solid foundations to intelligent automation.
           </p>
         </div>
 
-        {/* Two-Phase Roadmap */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-          {/* Phase 1: Foundation — solid, completed feel */}
-          <div className="bg-zinc-900 border-2 border-green-500/20 rounded-xl p-8 hover:border-green-500/30 transition-colors">
-            <h3 className="text-white font-semibold text-xl mb-6">
-              Phase 1: Foundation
-            </h3>
-            <div className="space-y-4">
-              {[
-                'Email ingestion',
-                'LLM summaries',
-                'Workspace grouping',
-                'Manual agents',
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-zinc-300">{item}</span>
+        {/* Phases */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-20">
+          {/* Phase 1 — solid */}
+          <div className="rounded-xl border-2 border-green-500/15 bg-zinc-900/20 p-7 card-lift hover:border-green-500/25">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="text-[10px] font-medium text-green-400/70 uppercase tracking-widest">Phase 1</span>
+              <span className="text-[10px] text-zinc-700">Foundation</span>
+            </div>
+            <div className="space-y-3.5">
+              {['Email ingestion', 'LLM summaries', 'Workspace grouping', 'Manual agents'].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-500/60 flex-shrink-0" />
+                  <span className="text-sm text-zinc-300">{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Phase 2: Intelligence — upcoming, dashed border */}
-          <div className="bg-zinc-900 border-2 border-dashed border-zinc-700 rounded-xl p-8 hover:border-zinc-600 transition-colors">
-            <h3 className="text-white font-semibold text-xl mb-6">
-              Phase 2: Intelligence
-            </h3>
-            <div className="space-y-4">
-              {[
-                'Structured extraction',
-                'Identity layer',
-                'Automated execution',
-                'Real-time updates',
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full border border-zinc-600 flex-shrink-0 mt-0.5 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-zinc-600" />
-                  </div>
-                  <span className="text-zinc-300">{item}</span>
+          {/* Phase 2 — upcoming */}
+          <div className="rounded-xl border-2 border-dashed border-zinc-700/50 bg-zinc-900/20 p-7 card-lift hover:border-zinc-600/50">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="text-[10px] font-medium text-zinc-500 uppercase tracking-widest">Phase 2</span>
+              <span className="text-[10px] text-zinc-700">Intelligence</span>
+            </div>
+            <div className="space-y-3.5">
+              {['Structured extraction', 'Identity layer', 'Automated execution', 'Real-time updates'].map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <Circle className="w-4 h-4 text-zinc-600 flex-shrink-0" />
+                  <span className="text-sm text-zinc-400">{item}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Why Now Section */}
+        {/* Why Now */}
         <div>
-          <h3 className="text-white font-semibold text-lg mb-8">
-            Why now
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* AI Capability Shift */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-700 transition-colors">
-              <div className="mb-4 inline-block p-3 rounded-lg bg-blue-500/10">
-                <Cpu className="w-5 h-5 text-blue-400" />
+          <h3 className="text-lg font-semibold text-white mb-8">Why now</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-6 card-lift hover:border-zinc-700/50">
+              <div className="mb-4 inline-flex p-2.5 rounded-lg bg-blue-500/8 border border-blue-500/10">
+                <Cpu className="w-4 h-4 text-blue-400" />
               </div>
-              <h4 className="text-white font-semibold text-base mb-3">
-                AI capability shift
-              </h4>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                LLMs can now reliably extract structured data from unstructured emails. Vision models can parse attachments. The foundation for email intelligence that wasn't possible 18 months ago is here.
+              <h4 className="text-white font-semibold text-sm mb-2">AI capability shift</h4>
+              <p className="text-zinc-500 text-xs leading-relaxed font-light">
+                LLMs can now reliably extract structured data from unstructured emails. Vision models can parse attachments. The foundation for email intelligence wasn&apos;t possible 18 months ago.
               </p>
             </div>
 
-            {/* Behaviour Shift */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-700 transition-colors">
-              <div className="mb-4 inline-block p-3 rounded-lg bg-amber-500/10">
-                <Users className="w-5 h-5 text-amber-400" />
+            <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-6 card-lift hover:border-zinc-700/50">
+              <div className="mb-4 inline-flex p-2.5 rounded-lg bg-amber-500/8 border border-amber-500/10">
+                <Users className="w-4 h-4 text-amber-400" />
               </div>
-              <h4 className="text-white font-semibold text-base mb-3">
-                Behaviour shift
-              </h4>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                Users expect tools to take action, not just inform. Email remains the inbox of record for transactional information. A system that extracts, organizes, and acts on email is where work happens.
+              <h4 className="text-white font-semibold text-sm mb-2">Behaviour shift</h4>
+              <p className="text-zinc-500 text-xs leading-relaxed font-light">
+                Users expect tools to take action, not just inform. Email remains the inbox of record for transactional data. A system that extracts, organises, and acts is where work happens.
               </p>
             </div>
           </div>

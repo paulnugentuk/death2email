@@ -1,8 +1,20 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Instrument_Serif, Outfit } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const instrumentSerif = Instrument_Serif({
+  weight: '400',
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'death2email — the post-inbox interface',
@@ -11,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'death2email — the post-inbox interface',
     description:
-      'Email is not a communication tool anymore. It\'s an unstructured task queue. death2email replaces the inbox with an AI layer that interprets, extracts, and acts.',
+      'Email is not a communication tool anymore. It\'s an unstructured task queue.',
     type: 'website',
   },
 }
@@ -23,7 +35,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${instrumentSerif.variable} ${outfit.variable}`}>
+        {children}
+      </body>
     </html>
   )
 }
