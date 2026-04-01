@@ -41,7 +41,7 @@ export default function WorkspacesShowcase() {
 
   return (
     <section id="workspaces" className="py-28 md:py-36 px-6 md:px-8 bg-[#0a0a0a]">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">

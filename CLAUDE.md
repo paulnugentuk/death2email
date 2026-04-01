@@ -26,7 +26,7 @@ git add -A && git commit -m "improve: <description>" && git push
 - **Accent colors**: blue-500 (travel), purple-500 (shopping), green-500 (finance), pink-500 (events), red-500 (urgent), amber-500 (suggested)
 - **Display font**: Instrument Serif (loaded via next/font/google, CSS var `--font-display`, class `.font-display`)
 - **Body font**: Outfit (loaded via next/font/google, CSS var `--font-body`, default body font)
-- **Spacing**: Generous. Every section should have py-28 md:py-36 px-6 md:px-8 minimum. Max-w-5xl mx-auto for content.
+- **Spacing**: Generous. Every section should have py-28 md:py-36 px-6 md:px-8 minimum. Max-w-6xl mx-auto for content.
 - **Aesthetic target**: Stripe annual letters meets Linear.app — editorial, confident, premium
 - **Texture**: Subtle noise grain overlay via CSS SVG filter on body::after
 

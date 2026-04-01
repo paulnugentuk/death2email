@@ -14,7 +14,7 @@ export default function Footer() {
       {/* Gradient divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
 
-      <div className="max-w-5xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto text-center">
         {/* Brand */}
         <h3 className="font-display text-2xl text-white mb-2">death2email</h3>
         <p className="text-zinc-600 text-sm mb-8">A product vision by Paul Nugent</p>
