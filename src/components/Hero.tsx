@@ -6,7 +6,7 @@ export default function Hero() {
       {/* Radial gradient — subtle depth */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,rgba(39,39,42,0.25)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="relative z-10 text-center px-6 md:px-8">
+      <div className="relative z-10 text-center px-6 md:px-12 lg:px-16">
         {/* Label */}
         <p className="hero-reveal hero-delay-1 text-[11px] tracking-[0.35em] uppercase text-zinc-500 mb-10">
           A product vision

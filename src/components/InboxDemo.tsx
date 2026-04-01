@@ -43,7 +43,7 @@ export default function InboxDemo() {
   };
 
   return (
-    <section id="demo" className="py-28 md:py-36 bg-[#0a0a0a]">
+    <section id="demo" className="py-28 md:py-36 px-6 md:px-12 lg:px-16 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto px-6 md:px-8">
         {/* Header */}
         <div className="text-center mb-16">

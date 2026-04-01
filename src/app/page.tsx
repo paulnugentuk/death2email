@@ -13,7 +13,7 @@ export default function Home() {
       <Hero />
 
       {/* Editorial interstitial — the thesis */}
-      <div className="py-20 md:py-28 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="py-20 md:py-28 px-6 md:px-12 lg:px-16 bg-[#0a0a0a]">
         <p className="max-w-4xl mx-auto text-center font-display italic text-2xl md:text-3xl lg:text-4xl text-zinc-300 leading-relaxed">
           Email is not a communication tool anymore &mdash; it&apos;s an unstructured task queue.
         </p>
@@ -24,7 +24,7 @@ export default function Home() {
       <div className="section-divider" />
 
       {/* Editorial interstitial — the possibility */}
-      <div className="py-20 md:py-28 px-6 md:px-8 bg-[#0a0a0a]">
+      <div className="py-20 md:py-28 px-6 md:px-12 lg:px-16 bg-[#0a0a0a]">
         <p className="max-w-4xl mx-auto text-center font-display italic text-2xl md:text-3xl lg:text-4xl text-zinc-300 leading-relaxed">
           What if your inbox could think?
         </p>

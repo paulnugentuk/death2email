@@ -40,7 +40,7 @@ export default function WorkspacesShowcase() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (
-    <section id="workspaces" className="py-28 md:py-36 px-6 md:px-8 bg-[#0a0a0a]">
+    <section id="workspaces" className="py-28 md:py-36 px-6 md:px-12 lg:px-16 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-16">

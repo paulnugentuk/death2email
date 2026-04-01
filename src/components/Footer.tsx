@@ -10,7 +10,7 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="relative py-20 px-6 md:px-8 bg-[#0a0a0a]">
+    <footer className="relative py-20 px-6 md:px-12 lg:px-16 bg-[#0a0a0a]">
       {/* Gradient divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
 
